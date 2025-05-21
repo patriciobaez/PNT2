@@ -1,5 +1,5 @@
 <template>
-  <ul class="text-sm space-y-1">
+  <ul>
     <li><strong>Auth:</strong> {{ api.Auth || 'Ninguno' }}</li>
     <li><strong>HTTPS:</strong> {{ api.HTTPS ? 'Sí' : 'No' }}</li>
     <li><strong>CORS:</strong> {{ api.Cors }}</li>
@@ -7,6 +7,7 @@
     <li><strong>Notas:</strong> {{ api.notes }}</li>
   </ul>
 </template>
+
 <script setup>
-defineProps({ api: Object })
+  defineProps({ api: Object })
 </script>
