@@ -1,19 +1,13 @@
 <template>
   <div class="home-container">
     <h1 class="title">Catálogo de APIs</h1>
+    <SearchApis @search="onSearch" />
     <div v-if="loading" class="loading">Cargando APIs…</div>
     <div v-else>
-      <ul class="api-list">
-        <li v-for="api in apis" :key="api.ID" class="api-card">
-          <div class="api-info">
-            <div class="api-name">{{ api.API }}</div>
-            <div class="api-desc">{{ api.Description }}</div>
-          </div>
-          <button class="detail-btn" @click="goToDetail(api.ID)">
-            Ver detalle
-          </button>
-        </li>
-      </ul>
+      <ApiList v-if="filteredApis.length" :apis="filteredApis" @detail="goToDetail" />
+      <div v-else class="no-results">
+        No se encontró ninguna API para tu búsqueda.
+      </div>
     </div>
   </div>
 </template>
@@ -21,16 +15,26 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import SearchApis from '../components/SearchApis.vue'
+import ApiList from '../components/ApiList.vue'
+import { useApiSearch } from '../composables/useApiSearch'
 
 const apis = ref([])
+const searchText = ref('')
 const loading = ref(true)
 const router = useRouter()
 
 onMounted(async () => {
   const res = await fetch('/apis.json')
-  apis.value = await res.json()
+  apis.value = (await res.json()).filter(api => api.API)
   loading.value = false
 })
+
+const { filteredApis } = useApiSearch(apis, searchText)
+
+function onSearch(text) {
+  searchText.value = text
+}
 
 function goToDetail(apiID) {
   router.push(`/apis/${apiID}`)
@@ -56,6 +60,13 @@ function goToDetail(apiID) {
   color: #888;
   padding: 32px 0;
   text-align: center;
+}
+.no-results {
+  font-size: 1.08rem;
+  color: #b0b0b0;
+  text-align: center;
+  margin-top: 38px;
+  font-style: italic;
 }
 .api-list {
   list-style: none;
