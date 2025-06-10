@@ -46,6 +46,7 @@
     const user = userService.validacionUsuario(email.value, password.value)
     if (user) {
       error.value = false
+      sessionStorage.setItem('userEmail', user.email)
       router.push("/")
     } else {
       error.value = true

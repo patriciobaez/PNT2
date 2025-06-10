@@ -5,20 +5,42 @@
         <div class="api-name">{{ api.API }}</div>
         <div class="api-desc">{{ api.Description }}</div>
       </div>
-      <button class="detail-btn" @click="$emit('detail', api.ID)">
-        Ver detalle
-      </button>
+      <div class="api-actions">
+        <FavoriteStar :api-id="api.ID" :user-email="userEmail" @change="onFavChange" />
+        <button class="detail-btn" @click="$emit('detail', api.ID)">
+          Ver detalle
+        </button>
+      </div>
     </li>
   </ul>
 </template>
 
 <script setup>
-    defineProps({ apis: Array })
-    defineEmits(['detail'])
+import { ref, watchEffect } from 'vue'
+import FavoriteStar from './FavoriteStar.vue'
+const props = defineProps({ apis: Array })
+const emit = defineEmits(['detail'])
+
+const userEmail = sessionStorage.getItem('userEmail')
+const favKey = userEmail ? `favoritos_${userEmail}` : null
+const favoritos = ref([])
+
+function loadFavs() {
+  if (favKey) {
+    favoritos.value = JSON.parse(localStorage.getItem(favKey) || '[]')
+  }
+}
+function isFav(id) {
+  return favoritos.value.includes(id)
+}
+function onFavChange() {
+  loadFavs()
+}
+watchEffect(loadFavs)
 </script>
 
 <style scoped>
-/* Copia los estilos de la lista del Home */
+
 .api-list {
   list-style: none;
   padding: 0;
@@ -54,6 +76,11 @@
   font-size: 1rem;
   color: #6b7280;
   max-width: 480px;
+}
+.api-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .detail-btn {
   background: linear-gradient(90deg, #ff7e5f 0%, #feb47b 100%);
