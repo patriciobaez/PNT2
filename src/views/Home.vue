@@ -2,6 +2,7 @@
   <div class="home-container">
     <h1 class="title">Catálogo de APIs</h1>
     <SearchApis @search="onSearch" />
+    <ApiFilters :apis="apis" @filter="onFilter" />
     <div v-if="loading" class="loading">Cargando APIs…</div>
     <div v-else>
       <ApiList v-if="filteredApis.length" :apis="filteredApis" @detail="goToDetail" />
@@ -13,10 +14,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import SearchApis from '../components/SearchApis.vue'
 import ApiList from '../components/ApiList.vue'
+import ApiFilters from '../components/ApiFilters.vue'
 import { useApiSearch } from '../composables/useApiSearch'
 
 const apis = ref([])
@@ -24,18 +26,33 @@ const searchText = ref('')
 const loading = ref(true)
 const router = useRouter()
 
+// Filtros
+const selectedCategory = ref('')
+const selectedDifficulty = ref('')
+
 onMounted(async () => {
   const res = await fetch('/apis.json')
   apis.value = (await res.json()).filter(api => api.API)
   loading.value = false
 })
 
-const { filteredApis } = useApiSearch(apis, searchText)
+const { filteredApis: searchFilteredApis } = useApiSearch(apis, searchText)
+
+const filteredApis = computed(() => {
+  return searchFilteredApis.value.filter(api => {
+    const matchCategory = !selectedCategory.value || api.Category === selectedCategory.value
+    const matchDifficulty = !selectedDifficulty.value || api.Difficulty == selectedDifficulty.value
+    return matchCategory && matchDifficulty
+  })
+})
 
 function onSearch(text) {
   searchText.value = text
 }
-
+function onFilter({ category, difficulty }) {
+  selectedCategory.value = category
+  selectedDifficulty.value = difficulty
+}
 function goToDetail(apiID) {
   router.push(`/apis/${apiID}`)
 }
