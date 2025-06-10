@@ -15,12 +15,7 @@
         </RouterLink>
       </li>
       <li>
-        <button class="navbar-btn" title="Favoritos">
-          <span class="icon">⭐</span>
-        </button>
-      </li>
-      <li>
-        <RouterLink to="/login" class="navbar-btn" title="Login">
+        <RouterLink to="/perfil" class="navbar-btn" title="Perfil">
           <span class="icon">👤</span>
         </RouterLink>
       </li>
