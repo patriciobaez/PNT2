@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-    <div class="navbar-logo">
+    <div class="navbar-logo" @click="goHome" style="cursor:pointer">
       <img src="../assets/logo.png" alt="Logo" class="logo-img" />
     </div>
     <ul class="navbar-list">
@@ -29,7 +29,11 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
+const router = useRouter()
+function goHome() {
+  router.push('/')
+}
 </script>
 
 <style scoped>
