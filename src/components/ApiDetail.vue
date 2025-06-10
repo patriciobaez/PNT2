@@ -1,19 +1,20 @@
 <template>
-  <div>
-    <h1>{{ api.API }}</h1>
-    <p>{{ api.Description }}</p>
+  <div class="api-detail-card">
+    <h1 class="api-title">{{ api.API }}</h1>
+    <p class="api-desc">{{ api.Description }}</p>
 
-    <!-- Aquí DocumentationButton -->
-    <DocumentationButton :doc-link="api.docLink" />
+    <div class="api-detail-row">
+      <DocumentationButton :doc-link="api.docLink" />
+      <DifficultyRating :difficulty="api.Difficulty" />
+    </div>
 
-    <!-- Aquí DifficultyRating -->
-    <DifficultyRating :difficulty="api.Difficulty" />
+    <div class="api-detail-section">
+      <ApiInfo :api="api" />
+    </div>
 
-    <!-- Aquí ApiInfo -->
-    <ApiInfo :api="api" />
-
-    <!-- Aquí ApiTester -->
-    <ApiTester :api="api" />
+    <div class="api-detail-section">
+      <ApiTester :api="api" />
+    </div>
   </div>
 </template>
 
@@ -25,3 +26,40 @@
 
   defineProps({ api: Object })
 </script>
+
+<style scoped>
+.api-detail-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 12px 0 rgba(60,60,60,0.08);
+  padding: 36px 32px 32px 32px;
+  max-width: 600px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.api-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+}
+.api-desc {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+.api-detail-row {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.api-detail-section {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-top: 0;
+}
+</style>
