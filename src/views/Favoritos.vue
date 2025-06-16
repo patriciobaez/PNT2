@@ -10,7 +10,7 @@
           <div class="api-desc">{{ api.Description }}</div>
         </div>
         <div class="api-actions">
-          <FavoriteStar :api-id="api.ID" :user-email="userEmail" @change="onFavChange" />
+          <FavoriteStar :api-id="api.ID" :user-id="userId" @change="loadUserFavs" />
           <button class="detail-btn" @click="goToDetail(api.ID)">Ver detalle</button>
         </div>
       </li>
@@ -20,38 +20,41 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watchEffect } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import FavoriteStar from '../components/FavoriteStar.vue'
 import ApiFilters from '../components/ApiFilters.vue'
 import SearchApis from '../components/SearchApis.vue'
 
+const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/api/users'
 const router = useRouter()
-const userEmail = sessionStorage.getItem('userEmail')
-const favKey = userEmail ? `favoritos_${userEmail}` : null
+const userId = sessionStorage.getItem('userId')
 const allApis = ref([])
-const favoritos = ref([])
+const userFavorites = ref([])
 const search = ref('')
 const filter = ref({ category: '', difficulty: '' })
 
 onMounted(async () => {
-  if (!userEmail) {
+  if (!userId) {
     router.replace('/login')
     return
   }
   const res = await fetch('/apis.json')
   allApis.value = await res.json()
-  favoritos.value = JSON.parse(localStorage.getItem(favKey) || '[]')
+  await loadUserFavs()
 })
 
-watchEffect(() => {
-  if (favKey) {
-    favoritos.value = JSON.parse(localStorage.getItem(favKey) || '[]')
+async function loadUserFavs() {
+  if (!userId) return
+  const res = await fetch(`${API_URL}/${userId}`)
+  if (res.ok) {
+    const user = await res.json()
+    userFavorites.value = Array.isArray(user.favorites) ? user.favorites : []
   }
-})
+}
 
 const filteredFavs = computed(() => {
-  let favApis = allApis.value.filter(api => favoritos.value.includes(api.ID))
+  let favApis = allApis.value.filter(api => userFavorites.value.some(fav => fav.apiId === api.ID))
   if (filter.value.category) {
     favApis = favApis.filter(api => api.Category === filter.value.category)
   }
@@ -73,7 +76,6 @@ function onFilter(val) {
 function goToDetail(id) {
   router.push(`/apis/${id}`)
 }
-
 </script>
 
 <style scoped>
