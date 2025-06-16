@@ -25,7 +25,10 @@ const apis = ref([])
 const searchText = ref('')
 const loading = ref(true)
 const router = useRouter()
-const filter = ref({ category: '', difficulty: '' })
+
+// Filtros
+const selectedCategory = ref('')
+const selectedDifficulty = ref('')
 
 onMounted(async () => {
   const res = await fetch('/apis.json')
@@ -33,27 +36,23 @@ onMounted(async () => {
   loading.value = false
 })
 
+const { filteredApis: searchFilteredApis } = useApiSearch(apis, searchText)
+
+const filteredApis = computed(() => {
+  return searchFilteredApis.value.filter(api => {
+    const matchCategory = !selectedCategory.value || api.Category === selectedCategory.value
+    const matchDifficulty = !selectedDifficulty.value || api.Difficulty == selectedDifficulty.value
+    return matchCategory && matchDifficulty
+  })
+})
+
 function onSearch(text) {
   searchText.value = text
 }
-
-function onFilter(val) {
-  filter.value = val
+function onFilter({ category, difficulty }) {
+  selectedCategory.value = category
+  selectedDifficulty.value = difficulty
 }
-
-const filteredApis = computed(() => {
-  let result = apis.value
-  if (filter.value.category) {
-    result = result.filter(api => api.Category === filter.value.category)
-  }
-  if (filter.value.difficulty) {
-    result = result.filter(api => String(api.Difficulty) === String(filter.value.difficulty))
-  }
-  if (searchText.value) {
-    result = result.filter(api => api.API.toLowerCase().includes(searchText.value.toLowerCase()))
-  }
-  return result
-})
 
 function goToDetail(apiID) {
   router.push(`/apis/${apiID}`)
