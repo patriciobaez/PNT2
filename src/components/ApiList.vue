@@ -6,7 +6,7 @@
         <div class="api-desc">{{ api.Description }}</div>
       </div>
       <div class="api-actions">
-        <FavoriteStar :api-id="api.ID" :user-email="userEmail" @change="onFavChange" />
+        <FavoriteStar :api-id="api.ID" :user-id="userId" @change="onFavChange" />
         <button class="detail-btn" @click="$emit('detail', api.ID)">
           Ver detalle
         </button>
@@ -21,22 +21,7 @@ import FavoriteStar from './FavoriteStar.vue'
 const props = defineProps({ apis: Array })
 const emit = defineEmits(['detail'])
 
-const userEmail = sessionStorage.getItem('userEmail')
-const favKey = userEmail ? `favoritos_${userEmail}` : null
-const favoritos = ref([])
-
-function loadFavs() {
-  if (favKey) {
-    favoritos.value = JSON.parse(localStorage.getItem(favKey) || '[]')
-  }
-}
-function isFav(id) {
-  return favoritos.value.includes(id)
-}
-function onFavChange() {
-  loadFavs()
-}
-watchEffect(loadFavs)
+const userId = sessionStorage.getItem('userId')
 </script>
 
 <style scoped>

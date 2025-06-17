@@ -30,23 +30,22 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
-  import UserData from '/src/data/usersData.js'
 
   const email = ref("")
   const password = ref("")
   const error = ref(false)
   const router = useRouter()
-  const userService = new UserData()
+  const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
 
-  onMounted(async () => {
-    await userService.cargarDatos()
-  })
-
-  function login() {
-    const user = userService.validacionUsuario(email.value, password.value)
+  async function login() {
+    // Buscar usuario por email y password en MockAPI
+    const res = await fetch(`${API_URL}?email=${email.value}`)
+    const users = await res.json()
+    const user = users.find(u => u.password === password.value)
     if (user) {
       error.value = false
       sessionStorage.setItem('userEmail', user.email)
+      sessionStorage.setItem('userId', user.id)
       router.push("/")
     } else {
       error.value = true

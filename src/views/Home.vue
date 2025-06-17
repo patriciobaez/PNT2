@@ -53,6 +53,7 @@ function onFilter({ category, difficulty }) {
   selectedCategory.value = category
   selectedDifficulty.value = difficulty
 }
+
 function goToDetail(apiID) {
   router.push(`/apis/${apiID}`)
 }

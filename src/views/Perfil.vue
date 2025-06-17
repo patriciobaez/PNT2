@@ -30,6 +30,7 @@ function goToFavoritos() {
 }
 function cerrarSesion() {
   sessionStorage.removeItem('userEmail')
+  sessionStorage.removeItem('userId')
   router.push('/login')
 }
 </script>

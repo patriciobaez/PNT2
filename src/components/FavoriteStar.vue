@@ -6,31 +6,57 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
 const props = defineProps({
   apiId: { type: String, required: true },
-  userEmail: { type: String, required: true }
+  userId: { type: String, required: true }
 })
 const emit = defineEmits(['change'])
-const favKey = `favoritos_${props.userEmail}`
 const isFav = ref(false)
+const favorites = ref([])
+const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
+const router = useRouter()
 
-function loadFav() {
-  const favs = JSON.parse(localStorage.getItem(favKey) || '[]')
-  isFav.value = favs.includes(props.apiId)
-}
-function toggleFav() {
-  let favs = JSON.parse(localStorage.getItem(favKey) || '[]')
-  if (isFav.value) {
-    favs = favs.filter(f => f !== props.apiId)
-  } else {
-    favs.push(props.apiId)
+async function fetchUserFavs() {
+  if (!props.userId) return
+  const res = await fetch(`${API_URL}/${props.userId}`)
+  if (res.ok) {
+    const user = await res.json()
+    favorites.value = Array.isArray(user.favorites) ? user.favorites : []
+    isFav.value = favorites.value.some(fav => fav.apiId === props.apiId)
   }
-  localStorage.setItem(favKey, JSON.stringify(favs))
-  isFav.value = !isFav.value
-  emit('change', isFav.value)
 }
-watchEffect(loadFav)
+
+async function toggleFav() {
+  if (!props.userId) {
+    router.push('/login')
+    return
+  }
+  await fetchUserFavs()
+  let newFavs = [...favorites.value]
+  if (isFav.value) {
+    // Quitar favorito: filtrar el objeto por apiId
+    newFavs = newFavs.filter(fav => fav.apiId !== props.apiId)
+  } else {
+    // Agregar favorito: push objeto con apiId y fecha actual
+    newFavs.push({ apiId: props.apiId, date: new Date().toISOString() })
+  }
+  const res = await fetch(`${API_URL}/${props.userId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ favorites: newFavs })
+  })
+  if (res.ok) {
+    favorites.value = newFavs
+    isFav.value = newFavs.some(fav => fav.apiId === props.apiId)
+    emit('change', isFav.value)
+  }
+}
+
+onMounted(fetchUserFavs)
+watch(() => [props.apiId, props.userId], fetchUserFavs)
 </script>
 
 <style scoped>
