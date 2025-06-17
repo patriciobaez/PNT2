@@ -35,7 +35,7 @@
   const password = ref("")
   const error = ref(false)
   const router = useRouter()
-  const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/api/users'
+  const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
 
   async function login() {
     // Buscar usuario por email y password en MockAPI

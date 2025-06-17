@@ -5,7 +5,7 @@ class UserData {
     }
 
     async getUsersData() {
-        const response = await fetch('https://68506351e7c42cfd17988666.mockapi.io/api/users');
+        const response = await fetch('https://68506351e7c42cfd17988666.mockapi.io/grapis/users');
         const data = await response.json();
         return data;
     }

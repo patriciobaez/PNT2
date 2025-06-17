@@ -16,7 +16,7 @@ const props = defineProps({
 const emit = defineEmits(['change'])
 const isFav = ref(false)
 const favorites = ref([])
-const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/api/users'
+const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
 const router = useRouter()
 
 async function fetchUserFavs() {
