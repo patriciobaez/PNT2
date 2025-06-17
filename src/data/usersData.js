@@ -1,3 +1,5 @@
+import { MOCKAPI_BASE_URL } from './mockapi';
+
 class UserData {
     constructor() {
         this.userLoginInformation = [];
@@ -5,7 +7,7 @@ class UserData {
     }
 
     async getUsersData() {
-        const response = await fetch('https://68506351e7c42cfd17988666.mockapi.io/grapis/users');
+        const response = await fetch(MOCKAPI_BASE_URL);
         const data = await response.json();
         return data;
     }

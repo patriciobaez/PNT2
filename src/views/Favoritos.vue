@@ -25,8 +25,9 @@ import { useRouter } from 'vue-router'
 import FavoriteStar from '../components/FavoriteStar.vue'
 import ApiFilters from '../components/ApiFilters.vue'
 import SearchApis from '../components/SearchApis.vue'
+import { MOCKAPI_BASE_URL } from '../data/mockapi'
 
-const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
+const API_URL = MOCKAPI_BASE_URL
 const router = useRouter()
 const userId = sessionStorage.getItem('userId')
 const allApis = ref([])
