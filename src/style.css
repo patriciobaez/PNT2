@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, .api-list, .api-card, .api-info, .api-name, .api-desc, .detail-btn, .filters-bar, .filter-select, .navbar, .navbar-btn, .perfil-view, .login-container, .login-left, .login-right, .form, .search-input, .difficulty-rating, .star, .diff-label {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif !important;
+}
+
+body {
+  background: #f5f6fa;
+  color: #222;
+}
