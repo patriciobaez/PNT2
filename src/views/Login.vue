@@ -30,12 +30,13 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
+  import { MOCKAPI_BASE_URL } from '../data/mockapi'
 
   const email = ref("")
   const password = ref("")
   const error = ref(false)
   const router = useRouter()
-  const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
+  const API_URL = MOCKAPI_BASE_URL
 
   async function login() {
     // Buscar usuario por email y password en MockAPI
