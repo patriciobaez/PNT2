@@ -14,9 +14,10 @@ class UserData {
         this.userLoginInformation = await this.getUsersData();
     }
 
-    validacionUsuario(email, password) {
+    validacionUsuario(usernameOrEmail, password) {
         return this.userLoginInformation.find(user =>
-            user.email === email && user.password === password
+            (user.email === usernameOrEmail || user.username === usernameOrEmail) &&
+            user.password === password
         );
     }
 }
