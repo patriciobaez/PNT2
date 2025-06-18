@@ -32,7 +32,6 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { MOCKAPI_BASE_URL } from '../data/mockapi'
 
-
 const usernameOrEmail = ref("")
 const password = ref("")
 const error = ref(false)
@@ -40,7 +39,7 @@ const router = useRouter()
 const API_URL = MOCKAPI_BASE_URL
 
 async function login() {
-  // Buscar usuario por email y password en MockAPI
+  // Buscar usuario por email o username y password en MockAPI
   const res = await fetch(`${API_URL}`)
   const users = await res.json()
   const user = users.find(u =>
@@ -57,6 +56,7 @@ async function login() {
   }
 }
 </script>
+
 
 <style scoped>
 .login-container {
