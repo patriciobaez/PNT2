@@ -10,15 +10,16 @@
         </RouterLink>
       </li>
       <li>
-        <RouterLink to="/perfil" class="navbar-btn" title="Perfil">
-          <span class="icon">👤</span>
-        </RouterLink>
-      </li>
-      <li>
         <RouterLink to="/metrics" class="navbar-btn" title="Métricas">
           <span class="icon">📊</span>
         </RouterLink>
       </li>
+      <li>
+        <RouterLink to="/perfil" class="navbar-btn" title="Perfil">
+          <span class="icon">👤</span>
+        </RouterLink>
+      </li>
+      
     </ul>
   </nav>
 </template>
