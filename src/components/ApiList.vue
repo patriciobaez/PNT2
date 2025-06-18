@@ -3,6 +3,7 @@
     <li v-for="api in apis" :key="api.ID" class="api-card">
       <div class="api-info">
         <div class="api-name">{{ api.API }}</div>
+        <div class="api-category">{{ api.Category }}</div>
         <div class="api-desc">{{ api.Description }}</div>
       </div>
       <div class="api-actions">
@@ -56,6 +57,12 @@ const userId = sessionStorage.getItem('userId')
   font-size: 1.18rem;
   font-weight: 600;
   color: #1a202c;
+}
+.api-category {
+  font-size: 0.98rem;
+  color: #f26c21;
+  font-weight: 600;
+  margin-bottom: 2px;
 }
 .api-desc {
   font-size: 1rem;

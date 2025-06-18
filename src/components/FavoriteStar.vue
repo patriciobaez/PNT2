@@ -8,6 +8,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { MOCKAPI_BASE_URL } from '../data/mockapi'
 
 const props = defineProps({
   apiId: { type: String, required: true },
@@ -16,7 +17,7 @@ const props = defineProps({
 const emit = defineEmits(['change'])
 const isFav = ref(false)
 const favorites = ref([])
-const API_URL = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
+const API_URL = MOCKAPI_BASE_URL
 const router = useRouter()
 
 async function fetchUserFavs() {

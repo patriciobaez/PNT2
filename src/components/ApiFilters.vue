@@ -6,7 +6,9 @@
     </select>
     <select v-model="selectedDifficulty" class="filter-select">
       <option value="">Todas las dificultades</option>
-      <option v-for="diff in difficulties" :key="diff" :value="diff">Dificultad {{ diff }}</option>
+      <option v-for="diff in difficulties" :key="diff" :value="diff">
+        {{ renderStars(diff) }} Dificultad: {{ diff }}
+      </option>
     </select>
   </div>
 </template>
@@ -30,6 +32,14 @@ const categories = computed(() => {
 const difficulties = computed(() => {
   return [...new Set(props.apis.map(api => api.Difficulty))].sort((a, b) => a - b)
 })
+
+function renderStars(difficulty) {
+  let stars = ''
+  for (let i = 1; i <= 3; i++) {
+    stars += i <= difficulty ? '★' : '☆'
+  }
+  return stars
+}
 
 watch([selectedCategory, selectedDifficulty], () => {
   emit('filter', {

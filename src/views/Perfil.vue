@@ -17,7 +17,7 @@ const userSession = ref(null)
 const router = useRouter()
 
 onMounted(() => {
-  const email = sessionStorage.getItem('userEmail')
+  const email = sessionStorage.getItem('userSession')
   if (!email) {
     router.replace('/login')
   } else {
@@ -45,9 +45,11 @@ function cerrarSesion() {
   box-shadow: 0 2px 12px #0001;
   text-align: center;
 }
+
 .perfil-info {
   margin-bottom: 24px;
 }
+
 button {
   margin: 8px;
   padding: 10px 18px;
@@ -58,6 +60,7 @@ button {
   font-size: 1rem;
   cursor: pointer;
 }
+
 button:hover {
   background: #a0a0a0;
 }
