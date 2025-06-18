@@ -66,11 +66,16 @@ function goHome() {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex: 1;              
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 100%;
   align-items: center;
+  width: 100%;
+  padding-bottom: 18px;   
+}
+
+.navbar-list li:last-child {
+  margin-top: auto;          
 }
 
 .navbar-btn {
