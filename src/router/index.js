@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Perfil from '../views/Perfil.vue'
 import Favoritos from '../views/Favoritos.vue'
 import ApiDetailPage from '../pages/ApiDetailPage.vue'
+import Metrics from '../views/Metrics.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -33,6 +34,11 @@ const router = createRouter({
             name: 'api-detail',
             component: ApiDetailPage,
             props: true
+        },
+        {
+            path: '/metrics',
+            name: 'metrics',
+            component: Metrics
         }
     ],
 });

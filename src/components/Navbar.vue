@@ -5,13 +5,13 @@
     </div>
     <ul class="navbar-list">
       <li>
-        <button class="navbar-btn" title="Buscar">
-          <span class="icon">🔍</span>
-        </button>
-      </li>
-      <li>
         <RouterLink to="/" class="navbar-btn" title="Inicio">
           <span class="icon">🏠</span>
+        </RouterLink>
+      </li>
+       <li>
+        <RouterLink to="/metrics" class="navbar-btn" title="Métricas">
+          <span class="icon">📊</span>
         </RouterLink>
       </li>
       <li>
