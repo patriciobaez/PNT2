@@ -18,6 +18,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { marked } from 'marked'
+import { sendOpenRouterChat } from '../composables/useOpenRouterChat.js'
 
 const props = defineProps({
   api: Object
@@ -34,26 +35,10 @@ async function generarIdea() {
   error.value = "";
   cargando.value = true;
   try {
-    const apiKey = import.meta.env.VITE_OPEN_ROUTER_API_KEY;
     const prompt = `Dame 1 idea creativa de uso para una API llamada "${props.api.API}", que pertenece a la categoría "${props.api.Category}" y cuya descripción es: "${props.api.Description}".\nLa idea debe ser breve, clara y enfocada en un caso de uso práctico. No incluyas detalles técnicos ni ejemplos de código, solo la idea general de cómo se podría utilizar esta API en un proyecto real.\ndevolver en formato markdown, con encabezados y párrafos, sin código ni listas.`;
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'google/gemma-3n-e4b-it:free',
-        messages: [
-          { role: "user", content: prompt }
-        ],
-        stream: false
-      })
-    });
-    const data = await response.json();
-    idea.value = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) ? data.choices[0].message.content : "No se pudo obtener respuesta";
+    idea.value = await sendOpenRouterChat({ prompt });
   } catch (e) {
-    error.value = "Error al conectar con OpenRouter: " + (e && e.message ? e.message : e);
+    error.value = e && e.message ? e.message : e;
   } finally {
     cargando.value = false;
   }

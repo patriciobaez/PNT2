@@ -28,8 +28,6 @@
   import ApiInfo from './ApiInfo.vue'
   import ApiTester from './ApiTester.vue'
   import ApiIdeaIA from './ApiIdeaIA.vue'
-  import { ref, computed } from 'vue'
-  import { marked } from 'marked'
 
   const props = defineProps({ api: Object })
 </script>
