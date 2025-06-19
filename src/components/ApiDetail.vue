@@ -15,6 +15,10 @@
     <div class="api-detail-section">
       <ApiTester :api="api" />
     </div>
+
+    <div class="api-detail-section">
+      <ApiIdeaIA :api="api" />
+    </div>
   </div>
 </template>
 
@@ -23,8 +27,9 @@
   import DifficultyRating from './DifficultyRating.vue'
   import ApiInfo from './ApiInfo.vue'
   import ApiTester from './ApiTester.vue'
+  import ApiIdeaIA from './ApiIdeaIA.vue'
 
-  defineProps({ api: Object })
+  const props = defineProps({ api: Object })
 </script>
 
 <style scoped>
@@ -61,5 +66,13 @@
   border-radius: 14px;
   padding: 18px 20px;
   margin-top: 0;
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+.markdown-body p {
+  margin-bottom: 1em;
 }
 </style>
