@@ -18,7 +18,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { marked } from 'marked'
-import { sendOpenRouterChat } from '../composables/useOpenRouterChat.js'
+import { sendOpenRouterChatWithProvisioning } from '../composables/useOpenRouterChat.js'
 
 const props = defineProps({
   api: Object
@@ -36,7 +36,7 @@ async function generarIdea() {
   cargando.value = true;
   try {
     const prompt = `Dame 1 idea creativa de uso para una API llamada "${props.api.API}", que pertenece a la categoría "${props.api.Category}" y cuya descripción es: "${props.api.Description}".\nLa idea debe ser breve, clara y enfocada en un caso de uso práctico. No incluyas detalles técnicos ni ejemplos de código, solo la idea general de cómo se podría utilizar esta API en un proyecto real.\ndevolver en formato markdown, con encabezados y párrafos, sin código ni listas.`;
-    idea.value = await sendOpenRouterChat({ prompt });
+    idea.value = await sendOpenRouterChatWithProvisioning({ prompt });
   } catch (e) {
     error.value = e && e.message ? e.message : e;
   } finally {
