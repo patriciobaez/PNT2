@@ -1,7 +1,15 @@
 <template>
-  <button class="fav-btn" :class="{ active: isFav }" @click.stop="toggleFav" :title="isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'">
-    <span v-if="isFav">★</span>
-    <span v-else>☆</span>
+  <button
+    class="fav-btn"
+    :class="{ active: isFav }"
+    @click.stop="toggleFav"
+    :title="isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+  >
+    <img
+      :src="isFav ? filledIcon : outlineIcon"
+      alt="Favorito"
+      class="fav-icon"
+    />
   </button>
 </template>
 
@@ -9,6 +17,10 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { MOCKAPI_BASE_URL } from '../data/mockapi'
+
+// Importa los dos SVG desde assets
+import outlineIcon from '../assets/bookmark-outline.svg'
+import filledIcon from '../assets/bookmark-filled.svg'
 
 const props = defineProps({
   apiId: { type: String, required: true },
@@ -38,10 +50,8 @@ async function toggleFav() {
   await fetchUserFavs()
   let newFavs = [...favorites.value]
   if (isFav.value) {
-    // Quitar favorito: filtrar el objeto por apiId
     newFavs = newFavs.filter(fav => fav.apiId !== props.apiId)
   } else {
-    // Agregar favorito: push objeto con apiId y fecha actual
     newFavs.push({ apiId: props.apiId, date: new Date().toISOString() })
   }
   const res = await fetch(`${API_URL}/${props.userId}`, {
@@ -64,19 +74,19 @@ watch(() => [props.apiId, props.userId], fetchUserFavs)
 .fav-btn {
   background: none;
   border: none;
-  font-size: 1.7rem;
+  padding: 4px;
   cursor: pointer;
-  color: #bbb;
-  transition: color 0.2s, transform 0.1s;
-  padding: 0 6px;
-}
-.fav-btn.active {
-  color: #ffd600;
-  transform: scale(1.2);
-  text-shadow: 0 2px 8px #ffd60055;
+  transition: transform 0.1s;
 }
 .fav-btn:hover {
-  color: #ffb300;
-  transform: scale(1.15);
+  transform: scale(1.1);
+}
+.fav-btn.active .fav-icon {
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.2));
+}
+.fav-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 </style>
