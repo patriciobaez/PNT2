@@ -7,8 +7,8 @@
   >
     <img
       :src="isFav ? filledIcon : outlineIcon"
+      :class="['fav-icon', isFav ? 'filled-icon' : 'outline-icon']"
       alt="Favorito"
-      class="fav-icon"
     />
   </button>
 </template>
@@ -18,7 +18,6 @@ import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { MOCKAPI_BASE_URL } from '../data/mockapi'
 
-// Importa los dos SVG desde assets
 import outlineIcon from '../assets/bookmark-outline.svg'
 import filledIcon from '../assets/bookmark-filled.svg'
 
@@ -74,19 +73,31 @@ watch(() => [props.apiId, props.userId], fetchUserFavs)
 .fav-btn {
   background: none;
   border: none;
-  padding: 4px;
   cursor: pointer;
   transition: transform 0.1s;
 }
 .fav-btn:hover {
   transform: scale(1.1);
 }
-.fav-btn.active .fav-icon {
-  filter: drop-shadow(0 0 4px rgba(0,0,0,0.2));
-}
+
+/* Iconos diferenciados */
 .fav-icon {
+  display: block;
+}
+
+.outline-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.filled-icon {
   width: 20px;
   height: 20px;
-  display: block;
+  padding: 4px;
+
+}
+
+.fav-btn.active .fav-icon {
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.2));
 }
 </style>
