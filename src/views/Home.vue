@@ -1,14 +1,21 @@
 <template>
-  <div class="home-container">
-    <h1 class="title">Catálogo de APIs</h1>
-    <SearchApis @search="onSearch" />
-    <ApiFilters :apis="apis" @filter="onFilter" />
-    <div v-if="loading" class="loading">Cargando APIs…</div>
-    <div v-else>
-      <ApiList v-if="filteredApis.length" :apis="filteredApis" @detail="goToDetail" />
-      <div v-else class="no-results">
-        No se encontró ninguna API para tu búsqueda.
+  <div class="home-metrics-layout">
+    <div class="home-left">
+      <h1 class="title">Catálogo de APIs</h1>
+      <SearchApis @search="onSearch" />
+      <ApiFilters :apis="apis" @filter="onFilter" />
+      <div v-if="loading" class="loading">Cargando APIs…</div>
+      <div v-else>
+        <ApiList v-if="filteredApis.length" :apis="filteredApis" @detail="goToDetail" />
+        <div v-else class="no-results">
+          No se encontró ninguna API para tu búsqueda.
+        </div>
       </div>
+    </div>
+    <div class="home-right">
+      <MetricsSummary />
+      <!-- Aquí puedes agregar un componente de noticias o novedades -->
+      <!-- <NewsPanel /> -->
     </div>
   </div>
 </template>
@@ -20,6 +27,7 @@ import SearchApis from '../components/SearchApis.vue'
 import ApiList from '../components/ApiList.vue'
 import ApiFilters from '../components/ApiFilters.vue'
 import { useApiSearch } from '../composables/useApiSearch'
+import MetricsSummary from '../components/MetricsSummary.vue'
 
 const apis = ref([])
 const searchText = ref('')
@@ -60,11 +68,26 @@ function goToDetail(apiID) {
 </script>
 
 <style scoped>
-.home-container {
+.home-metrics-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 32px;
   background: #fff;
-  padding: 40px 32px 32px 32px;
   min-height: 100vh;
+  padding: 40px 32px 32px 32px;
   box-sizing: border-box;
+}
+.home-left {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+.home-right {
+  width: 400px;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 .title {
   font-size: 2.2rem;
