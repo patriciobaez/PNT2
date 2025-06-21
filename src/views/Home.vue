@@ -14,8 +14,6 @@
     </div>
     <div class="home-right">
       <MetricsSummary />
-      <!-- Aquí puedes agregar un componente de noticias o novedades -->
-      <!-- <NewsPanel /> -->
     </div>
   </div>
 </template>
