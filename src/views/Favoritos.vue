@@ -2,8 +2,7 @@
   <div class="favoritos-view">
     <h1>Mis Favoritos</h1>
     <SearchApis v-model="search" @search="onSearch" />
-    <ApiFilters :apis="filteredFavs" @filter="onFilter" />
-    <ul class="api-list">
+    <ApiFilters :apis="userFavApis" @filter="onFilter" />    <ul class="api-list">
       <li v-for="api in filteredFavs" :key="api.ID" class="api-card">
         <div class="api-info">
           <div class="api-name">{{ api.API }}</div>
@@ -54,8 +53,10 @@ async function loadUserFavs() {
   }
 }
 
+const userFavApis = computed(() => allApis.value.filter(api => userFavorites.value.some(fav => fav.apiId === api.ID)))
+
 const filteredFavs = computed(() => {
-  let favApis = allApis.value.filter(api => userFavorites.value.some(fav => fav.apiId === api.ID))
+  let favApis = userFavApis.value
   if (filter.value.category) {
     favApis = favApis.filter(api => api.Category === filter.value.category)
   }
