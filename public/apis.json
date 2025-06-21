@@ -179,6 +179,6 @@
     "Category": "Development",
     "Difficulty": 1,
     "docLink": "https://agify.io/",
-    "fetchURL": "https://api.agify.io?name=Michael"
+    "fetchURL": "https://api.agify.io?name=Manuel"
   }
 ]
