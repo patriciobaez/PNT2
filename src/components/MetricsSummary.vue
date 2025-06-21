@@ -1,6 +1,6 @@
 <template>
   <div class="metrics-summary">
-    <h2>APIs más rankeadas esta semana</h2>
+    <h2>APIs más guardadas esta semana</h2>
     <div class="top-cards">
       <div v-for="api in topApis" :key="api.ID" class="api-card">
         <h3>{{ api.API }}</h3>
