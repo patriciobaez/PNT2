@@ -1,6 +1,6 @@
 <template>
   <ul class="api-list">
-    <li v-for="api in apis" :key="api.ID" class="api-card">
+    <li v-for="api in apisOrdenadas" :key="api.ID" class="api-card">
       <div class="api-info">
         <div class="api-name">{{ api.API }}</div>
         <div class="api-category">{{ api.Category }}</div>
@@ -17,12 +17,29 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
 import FavoriteStar from './FavoriteStar.vue'
+import { computed } from 'vue'
+
 const props = defineProps({ apis: Array })
 const emit = defineEmits(['detail'])
 
 const userId = sessionStorage.getItem('userId')
+
+// ordena las apis alfabéticamente por el nombre 
+const apisOrdenadas = computed(() => {
+  if (!props.apis) return []
+  const arr = [...props.apis]
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      if (arr[j].API > arr[j + 1].API) {
+        const temp = arr[j]
+        arr[j] = arr[j + 1]
+        arr[j + 1] = temp
+      }
+    }
+  }
+  return arr
+})
 </script>
 
 <style scoped>
