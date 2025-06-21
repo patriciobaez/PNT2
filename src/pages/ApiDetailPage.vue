@@ -5,9 +5,11 @@
     </div>
 
     <div v-else-if="api" class="api-detail-layout">
+      <!-- Main centrado -->
       <div class="api-detail-main">
         <ApiDetail :api="api" />
       </div>
+      <!-- Sidebar fijo -->
       <div class="api-detail-sidebar">
         <MoreApis :category="api.Category" :current-id="api.ID" />
       </div>
@@ -56,23 +58,19 @@ watch(
 }
 
 .api-detail-layout {
-  display: flex;
-  align-items: flex-start;
-  gap: 32px;
-  padding-top: 40px;
-  padding-right: 32px;
-  padding-bottom: 32px;
-  padding-left: calc(50vw - 360px);
-  box-sizing: border-box;
+  position: relative;
 }
 
 .api-detail-main {
-  flex: 0 0 auto;
-
+  max-width: 720px;
+  margin: 40px auto 32px;
+  box-sizing: border-box;
 }
 
 .api-detail-sidebar {
-  flex: 0 0 auto;
-  max-width: 300px;
+  position: fixed;
+  top: 40px;     
+  right: 32px;   
+  width: 300px;  
 }
 </style>
