@@ -20,7 +20,6 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 const props = defineProps({
   chartData: Object
 })
-// ⚠️ Convertir a computado para que Bar reaccione a cambios
 const reactiveChartData = computed(() => props.chartData)
 
 const chartOptions = {
