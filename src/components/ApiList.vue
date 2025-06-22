@@ -7,7 +7,7 @@
         <div class="api-desc">{{ api.Description }}</div>
       </div>
       <div class="api-actions">
-        <FavoriteStar :api-id="api.ID" :user-id="userId" @change="onFavChange" />
+        <FavoriteStar :api-id="String(api.ID)" :user-id="userId" />
         <button class="detail-btn" @click="$emit('detail', api.ID)">
           Ver detalle
         </button>
@@ -17,14 +17,12 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
 import FavoriteStar from './FavoriteStar.vue'
 const props = defineProps({ apis: Array })
 const emit = defineEmits(['detail'])
 
 const userId = sessionStorage.getItem('userId')
 </script>
-
 <style scoped>
 
 .api-list {

@@ -1,31 +1,36 @@
 <template>
-  <button class="fav-btn" :class="{ active: isFav }" @click.stop="toggleFav" :title="isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'">
-    <span v-if="isFav">★</span>
-    <span v-else>☆</span>
+  <button
+    class="fav-btn"
+    :class="{ active: isFav }"
+    @click.stop="toggleFav"
+    :title="isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+  >
+    <span>{{ isFav ? '★' : '☆' }}</span>
   </button>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { MOCKAPI_BASE_URL } from '../data/mockapi'
+import { useUserStore } from '../stores/userStore'
 
 const props = defineProps({
   apiId: { type: String, required: true },
   userId: { type: String, required: true }
 })
 const emit = defineEmits(['change'])
+const router = useRouter()
+const userStore = useUserStore()
+
 const isFav = ref(false)
 const favorites = ref([])
-const API_URL = MOCKAPI_BASE_URL
-const router = useRouter()
 
 async function fetchUserFavs() {
-  if (!props.userId) return
-  const res = await fetch(`${API_URL}/${props.userId}`)
+  const res = await fetch(`${MOCKAPI_BASE_URL}/${props.userId}`)
   if (res.ok) {
     const user = await res.json()
-    favorites.value = Array.isArray(user.favorites) ? user.favorites : []
+    favorites.value = user.favorites || []
     isFav.value = favorites.value.some(fav => fav.apiId === props.apiId)
   }
 }
@@ -36,28 +41,29 @@ async function toggleFav() {
     return
   }
   await fetchUserFavs()
-  let newFavs = [...favorites.value]
-  if (isFav.value) {
-    // Quitar favorito: filtrar el objeto por apiId
-    newFavs = newFavs.filter(fav => fav.apiId !== props.apiId)
-  } else {
-    // Agregar favorito: push objeto con apiId y fecha actual
-    newFavs.push({ apiId: props.apiId, date: new Date().toISOString() })
-  }
-  const res = await fetch(`${API_URL}/${props.userId}`, {
+
+  favorites.value = isFav.value
+    ? favorites.value.filter(fav => fav.apiId !== props.apiId)
+    : [...favorites.value, { apiId: props.apiId, date: new Date().toISOString() }]
+
+  const res = await fetch(`${MOCKAPI_BASE_URL}/${props.userId}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ favorites: newFavs })
+    body: JSON.stringify({ favorites: favorites.value })
   })
   if (res.ok) {
-    favorites.value = newFavs
-    isFav.value = newFavs.some(fav => fav.apiId === props.apiId)
+    isFav.value = favorites.value.some(fav => fav.apiId === props.apiId)
+    if (isFav.value) {
+      userStore.addFavorite(props.userId, props.apiId)
+    } else {
+      userStore.removeFavorite(props.userId, props.apiId)
+    }
     emit('change', isFav.value)
   }
 }
 
 onMounted(fetchUserFavs)
-watch(() => [props.apiId, props.userId], fetchUserFavs)
+watchEffect(fetchUserFavs)
 </script>
 
 <style scoped>
