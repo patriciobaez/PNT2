@@ -49,7 +49,7 @@ export function useApiFavorites(rangoDiasRef) {
     labels: apiFavorites.value.map(a => a.API),
     datasets: [
       {
-        label: 'Favoritos',
+        label: 'Guardados',
         data: apiFavorites.value.map(a => a.favCount),
         backgroundColor: '#4CAF50'
       }

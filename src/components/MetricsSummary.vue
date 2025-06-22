@@ -7,7 +7,7 @@
         <div v-for="api in topApis" :key="api.ID" class="api-card">
           <h3>{{ api.API }}</h3>
           <p>{{ api.Description }}</p>
-          <span class="badge">{{ api.favCount }} favoritos</span>
+          <span class="badge">{{ api.favCount }} guardadas</span>
         </div>
       </div>
       <div class="chart-section">

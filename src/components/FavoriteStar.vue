@@ -3,7 +3,7 @@
     class="fav-btn"
     :class="{ active: isFav }"
     @click.stop="toggleFav"
-    :title="isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+    :title="isFav ? '' : 'Guardar'"
   >
     <img
       :src="isFav ? filledIcon : outlineIcon"
