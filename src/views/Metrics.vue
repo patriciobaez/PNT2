@@ -3,7 +3,7 @@
     <h1>Métricas de uso</h1>
 
     <section class="top-apis">
-      <h2>Top 3 APIs más favoritas</h2>
+      <h2>Top 3 APIs más guardadas</h2>
       <div class="top-cards">
         <div v-for="api in topApis" :key="api.ID" class="api-card">
           <h3>{{ api.API }}</h3>
