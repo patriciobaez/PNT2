@@ -3,7 +3,7 @@
     <h1>Métricas de uso</h1>
 
     <section class="top-apis">
-      <h2>Top 3 APIs más favoritas</h2>
+      <h2>Top 3 APIs más guardadas</h2>
       <div class="top-cards">
         <div v-for="api in topApis" :key="api.ID" class="api-card">
           <h3>{{ api.API }}</h3>
@@ -30,79 +30,19 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import BarChart from '../components/BarrasChart.vue'
+import { useApiFavorites } from '../composables/useApiFavorites'
 
-const API_USERS = 'https://68506351e7c42cfd17988666.mockapi.io/grapis/users'
-const API_LIST = '/apis.json'
-
-const allApis = ref([])
-const allUsers = ref([])
 const rangoSeleccionado = ref('all')
 
-onMounted(async () => {
-  const [resApis, resUsers] = await Promise.all([
-    fetch(API_LIST),
-    fetch(API_USERS)
-  ])
-  allApis.value = await resApis.json()
-  allUsers.value = await resUsers.json()
+const rangoEnDias = computed(() => {
+  return rangoSeleccionado.value === 'all' ? 0 : parseInt(rangoSeleccionado.value)
 })
 
-const usuariosFiltrados = computed(() => {
-  if (rangoSeleccionado.value === 'all') return allUsers.value
-  const dias = parseInt(rangoSeleccionado.value)
-  const hoy = new Date()
-
-  return allUsers.value.map(user => ({
-    ...user,
-    favorites: (user.favorites || []).filter(fav => {
-      const diff = (hoy - new Date(fav.date)) / (1000 * 60 * 60 * 24)
-//Se calcula la diferencia en días entre la fecha actual y la fecha del favorito dividiendo
-//la diferencia en milisegundos por el número de milisegundos en un día.
-//si la diferencia es de 7 días o menos, suma en “Últimos 7 días”;
-//si es mayor a 7 pero menor o igual a 30, suma en “Últimos 30 días”;
-//y si es mayor a 30, suma en “Más antiguos”      
-      return diff <= dias
-    })
-  }))
-})
-
-const apiFavorites = computed(() => {
-  const favCount = {}
-
-  usuariosFiltrados.value.forEach(user => {
-    (user.favorites || []).forEach(fav => {
-      if (!favCount[fav.apiId]) favCount[fav.apiId] = 0
-      favCount[fav.apiId]++
-    })
-  })
-
-  return Object.entries(favCount)
-    .map(([apiId, count]) => {
-      const api = allApis.value.find(a => a.ID == apiId)
-      return {
-        ID: api?.ID,
-        API: api?.API || 'Desconocido',
-        Description: api?.Description || '',
-        favCount: count
-      }
-    })
-    .sort((a, b) => b.favCount - a.favCount)
-})
+const { apiFavorites, chartData } = useApiFavorites(rangoEnDias)
 
 const topApis = computed(() => apiFavorites.value.slice(0, 3))
-
-const chartData = computed(() => ({
-  labels: apiFavorites.value.map(a => a.API),
-  datasets: [
-    {
-      label: 'Cantidad de favoritos',
-      data: apiFavorites.value.map(a => a.favCount),
-      backgroundColor: '#4CAF50'
-    }
-  ]
-}))
 </script>
 
 <style scoped>

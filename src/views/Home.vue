@@ -14,6 +14,7 @@
     </div>
     <div class="home-right">
       <MetricsSummary />
+
     </div>
   </div>
 </template>
