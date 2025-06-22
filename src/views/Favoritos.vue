@@ -1,6 +1,6 @@
 <template>
   <div class="favoritos-view">
-    <h1>Mis Favoritos</h1>
+    <h1>Mis APIs guardadas</h1>
     <SearchApis v-model="search" @search="onSearch" />
     <ApiFilters :apis="userFavApis" @filter="onFilter" />    <ul class="api-list">
       <li v-for="api in filteredFavs" :key="api.ID" class="api-card">
@@ -14,7 +14,7 @@
         </div>
       </li>
     </ul>
-    <div v-if="filteredFavs.length === 0" class="no-favs">No tienes APIs favoritas.</div>
+    <div v-if="filteredFavs.length === 0" class="no-favs">No tienes APIs guardadas.</div>
   </div>
 </template>
 
@@ -115,6 +115,7 @@ function goToDetail(id) {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  align-items: flex-start;
 }
 .api-name {
   font-size: 1.18rem;

@@ -4,7 +4,7 @@
     <div class="perfil-info">
       <div><strong>Sesión actual:</strong> {{ userSession }}</div>
     </div>
-    <button @click="goToFavoritos">Ver mis favoritos</button>
+    <button @click="goToFavoritos">Ver mis APIs guardadas</button>
     <button @click="cerrarSesion">Cerrar sesión</button>
   </div>
 </template>
