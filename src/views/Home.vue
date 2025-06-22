@@ -13,9 +13,8 @@
       </div>
     </div>
     <div class="home-right">
-      <MetricsSummary :key="metricsKey" />
-      <!-- Aquí puedes agregar un componente de noticias o novedades -->
-      <!-- <NewsPanel /> -->
+      <MetricsSummary />
+
     </div>
   </div>
 </template>
@@ -28,10 +27,7 @@ import ApiList from '../components/ApiList.vue'
 import ApiFilters from '../components/ApiFilters.vue'
 import { useApiSearch } from '../composables/useApiSearch'
 import MetricsSummary from '../components/MetricsSummary.vue'
-import { useUserStore } from '../stores/userStore'
 
-const userStore = useUserStore()
-const metricsKey = computed(() => userStore.allUsers.length) // cambia cada vez que se actualizan los usuarios
 const apis = ref([])
 const searchText = ref('')
 const loading = ref(true)

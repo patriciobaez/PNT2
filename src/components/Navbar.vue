@@ -9,7 +9,7 @@
           <span class="icon">🏠</span>
         </RouterLink>
       </li>
-       <li>
+      <li>
         <RouterLink to="/metrics" class="navbar-btn" title="Métricas">
           <span class="icon">📊</span>
         </RouterLink>
@@ -19,6 +19,7 @@
           <span class="icon">👤</span>
         </RouterLink>
       </li>
+      
     </ul>
   </nav>
 </template>

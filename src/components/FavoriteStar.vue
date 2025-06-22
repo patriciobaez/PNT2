@@ -5,7 +5,11 @@
     @click.stop="toggleFav"
     :title="isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'"
   >
-    <span>{{ isFav ? '★' : '☆' }}</span>
+    <img
+      :src="isFav ? filledIcon : outlineIcon"
+      :class="['fav-icon', isFav ? 'filled-icon' : 'outline-icon']"
+      alt="Favorito"
+    />
   </button>
 </template>
 
@@ -14,6 +18,9 @@ import { ref, watchEffect, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { MOCKAPI_BASE_URL } from '../data/mockapi'
 import { useUserStore } from '../stores/userStore'
+
+import outlineIcon from '../assets/bookmark-outline.svg'
+import filledIcon from '../assets/bookmark-filled.svg'
 
 const props = defineProps({
   apiId: { type: String, required: true },
@@ -70,19 +77,31 @@ watchEffect(fetchUserFavs)
 .fav-btn {
   background: none;
   border: none;
-  font-size: 1.7rem;
   cursor: pointer;
-  color: #bbb;
-  transition: color 0.2s, transform 0.1s;
-  padding: 0 6px;
-}
-.fav-btn.active {
-  color: #ffd600;
-  transform: scale(1.2);
-  text-shadow: 0 2px 8px #ffd60055;
+  transition: transform 0.1s;
 }
 .fav-btn:hover {
-  color: #ffb300;
-  transform: scale(1.15);
+  transform: scale(1.1);
+}
+
+/* Iconos diferenciados */
+.fav-icon {
+  display: block;
+}
+
+.outline-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.filled-icon {
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+
+}
+
+.fav-btn.active .fav-icon {
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.2));
 }
 </style>

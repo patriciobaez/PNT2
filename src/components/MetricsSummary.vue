@@ -1,9 +1,7 @@
 <template>
   <div class="metrics-summary">
     <h2>APIs más rankeadas esta semana</h2>
-
     <div v-if="!apiFavorites.length" class="loading">Cargando métricas...</div>
-
     <div v-else>
       <div class="top-cards">
         <div v-for="api in topApis" :key="api.ID" class="api-card">
@@ -12,7 +10,6 @@
           <span class="badge">{{ api.favCount }} favoritos</span>
         </div>
       </div>
-
       <div class="chart-section">
         <BarChart :chart-data="chartData" />
       </div>
