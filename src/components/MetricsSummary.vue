@@ -1,6 +1,6 @@
 <template>
   <div class="metrics-summary">
-    <h2>APIs más rankeadas esta semana</h2>
+    <h2>APIs más guardadas esta semana</h2>
     <div v-if="!apiFavorites.length" class="loading">Cargando métricas...</div>
     <div v-else>
       <div class="top-cards">
